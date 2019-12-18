@@ -82,3 +82,15 @@ func TestApodOpts(t *testing.T) {
 		t.Errorf("Url mismatch. Got: %s, Want: %s", data.Url, expectedUrl)
 	}
 }
+
+func TestApodBadApiKey(t *testing.T) {
+	nasa.SetApiKey("bad_key")
+	_, err := nasa.Apod()
+
+	// Reset the key
+	nasa.SetApiKey("DEMO_KEY")
+
+	if err == nil {
+		t.Errorf("Expected an error.")
+	}
+}

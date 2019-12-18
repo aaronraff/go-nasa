@@ -1,6 +1,8 @@
 package nasa
 
 import (
+	"fmt"
+	"errors"
 	"net/http"
 	"encoding/json"
 )
@@ -36,6 +38,11 @@ func (c *Client) get(req *http.Request, data interface{}) error {
 	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return err
+	}
+
+	if res.StatusCode != 200 {
+		errString := fmt.Sprintf("Received status code: %d", res.StatusCode)
+		return errors.New(errString)
 	}
 
 	return json.NewDecoder(res.Body).Decode(data)

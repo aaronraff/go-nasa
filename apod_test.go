@@ -1,8 +1,8 @@
 package nasa
 
 import (
-	"time"
 	"testing"
+	"time"
 )
 
 var nasa *Client

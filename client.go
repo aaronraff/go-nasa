@@ -1,20 +1,23 @@
+// Package nasa provides an API client for interacting with the NASA API
+// which can be found here (https://api.nasa.gov/).
 package nasa
 
 import (
-	"fmt"
-	"errors"
-	"net/http"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
 )
 
-// Used to make all API calls. Keeps a hold of the API key as well as the http
-// client that should be used for making requests.
+// Client is used to make all API calls. 
+// It keeps a hold of the API key as well as the http client that should be
+// used for making requests.
 type Client struct {
 	apiKey string
 	httpClient *http.Client
 }
 
-// Creates a client using the API key: DEMO_KEY.
+// NewClient creates a client using the API key: DEMO_KEY.
 // This is useful for testing, but you will experience stricter rate-limits 
 // (https://api.nasa.gov/#authentication).
 func NewClient() *Client {
@@ -24,7 +27,7 @@ func NewClient() *Client {
 	}
 }
 
-// Sets the API key for all future requests.
+// SetApiKey sets the API key for all future requests.
 // You can sign up for an API key here (https://api.nasa.gov/#signUp).
 func (c *Client) SetApiKey(key string) {
 	c.apiKey = key

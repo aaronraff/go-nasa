@@ -2,19 +2,21 @@ package nasa
 
 import (
 	"net/http"
-	"time"
 	"strings"
+	"time"
 )
 
 const uri string = "https://api.nasa.gov/planetary/apod"
 
-// Custom struct to implement Unmarshallar interface. This allows the decoder
-// to decode the date in the response.
+// NasaDate is a custom struct that implements the Unmarshallar interface.
+// This allows the decoder to decode the date in the response.
+// This was needed since the date format provided by the API was unable to
+// be unmarshaled using the time.Time type.
 type NasaDate struct {
 	time.Time
 }
 
-// Structure to hold the APOD API call's response data.
+// ApodResult is a struct that represents the APOD API call's response data.
 type ApodResult struct {
 	Copyright string `json:"copyright"`
 	Date NasaDate `json:"date"`
@@ -26,17 +28,21 @@ type ApodResult struct {
 	Url string `json:"url"`
 }
 
+// ApodOptions is a struct that represents the options available for APOD API
+// calls.
 type ApodOptions struct {
 	Date time.Time
 	Hd bool
 }
 
-// Call the Astronomy Picture of the Day (APOD) API with the default paramters.
+// Apod calls the Astronomy Picture of the Day (APOD) API with the default 
+// paramters.
 func (c *Client) Apod() (*ApodResult, error) {
 	return c.ApodOpts(nil)
 }
 
-// Call the Astronomy Picture of the Day (APOD) API with the given options.
+// ApodOpts calls the Astronomy Picture of the Day (APOD) API with the given 
+// options as parameters.
 func (c *Client) ApodOpts(opts *ApodOptions) (*ApodResult, error) {
 	req, err := http.NewRequest("GET", uri, nil)
 	if err != nil {
@@ -63,7 +69,6 @@ func (c *Client) ApodOpts(opts *ApodOptions) (*ApodResult, error) {
 	return data, err
 }
 
-// Implement the Unmarshallar interface for the NasaData struct.
 func (d *NasaDate) UnmarshalJSON(b []byte) error {
 	s := strings.Trim(string(b), "\"")
 	t, err := time.Parse("2006-01-02", s)

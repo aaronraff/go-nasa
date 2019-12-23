@@ -9,20 +9,20 @@ import (
 	"net/http"
 )
 
-// Client is used to make all API calls. 
+// Client is used to make all API calls.
 // It keeps a hold of the API key as well as the http client that should be
 // used for making requests.
 type Client struct {
-	apiKey string
+	apiKey     string
 	httpClient *http.Client
 }
 
 // NewClient creates a client using the API key: DEMO_KEY.
-// This is useful for testing, but you will experience stricter rate-limits 
+// This is useful for testing, but you will experience stricter rate-limits
 // (https://api.nasa.gov/#authentication).
 func NewClient() *Client {
-	return &Client { 
-		apiKey: "DEMO_KEY",
+	return &Client{
+		apiKey:     "DEMO_KEY",
 		httpClient: &http.Client{},
 	}
 }

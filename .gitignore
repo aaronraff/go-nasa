@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+npm-debug.log
 
 # Test binary, built with `go test -c`
 *.test

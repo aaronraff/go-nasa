@@ -21,10 +21,10 @@ func TestApod(t *testing.T) {
 func TestApodOpts(t *testing.T) {
 	date, err := time.Parse("2006-01-02", "2019-12-17")
 	if err != nil {
-		panic(err)
+		t.Errorf("Unexpected error: %s", err)
 	}
 
-	opts := &ApodOptions {
+	opts := &ApodOptions{
 		Date: date,
 	}
 
@@ -32,14 +32,14 @@ func TestApodOpts(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unexpected error: %s", err)
 	}
-	
+
 	expectedCopyright := "Mark HansonMartin PughSSROPROMPTCTIONSF"
 	if data.Copyright != expectedCopyright {
 		t.Errorf("Copyright mismatch. Got: %s, Want: %s", data.Copyright, expectedCopyright)
 	}
 
-	expectedDate := date
-	if !data.Date.Equal(expectedDate) {
+	expectedDate := "2019-12-17"
+	if data.Date != expectedDate {
 		t.Errorf("Date mismatch. Got: %s, Want: %s", data.Date, expectedDate)
 	}
 

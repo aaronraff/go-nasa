@@ -85,3 +85,10 @@ func TestNeoFeedOpts(t *testing.T) {
 			firstCloseApproachData.MissDistance.Astronomical, expectedAstronomicalMiss)
 	}
 }
+
+func TestNeoLookup(t *testing.T) {
+	_, err := nasa.NeoLookup(3542519)
+	if err != nil {
+		t.Errorf("Unexpected error: %s", err)
+	}
+}

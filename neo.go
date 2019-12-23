@@ -2,6 +2,7 @@ package nasa
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -64,7 +65,7 @@ type NasaAsteroid struct {
 	IsSentryObject                 bool                    `json:"is_sentry_object"`
 }
 
-type NeoFeedResult struct {
+type NeoResult struct {
 	Links            NasaPaginationLinks       `json:"links"`
 	ElementCount     int                       `json:"element_count"`
 	NearEarthObjects map[string][]NasaAsteroid `json:"near_earth_objects"`
@@ -77,15 +78,21 @@ type NeoFeedOptions struct {
 	EndDate   time.Time
 }
 
+// NeoLookupOptions is a struct that represents the options available for NeoLookup API
+// calls.
+type NeoLookupOptions struct {
+	AsteroidId int
+}
+
 // NeoFeed calls the Near Earth Object Web Service (Neo) Feed API with the default
-// paramters.
-func (c *Client) NeoFeed() (*NeoFeedResult, error) {
+// parameters.
+func (c *Client) NeoFeed() (*NeoResult, error) {
 	return c.NeoFeedOpts(nil)
 }
 
 // NeoFeed calls the Near Earth Object Web Service (Neo) Feed API with the given
-// options as paramters.
-func (c *Client) NeoFeedOpts(opts *NeoFeedOptions) (*NeoFeedResult, error) {
+// options as parameters.
+func (c *Client) NeoFeedOpts(opts *NeoFeedOptions) (*NeoResult, error) {
 	req, err := http.NewRequest("GET", neoUri+"feed", nil)
 	if err != nil {
 		return nil, err
@@ -100,7 +107,41 @@ func (c *Client) NeoFeedOpts(opts *NeoFeedOptions) (*NeoFeedResult, error) {
 
 	req.URL.RawQuery = q.Encode()
 
-	data := &NeoFeedResult{}
+	data := &NeoResult{}
+	err = c.get(req, data)
+
+	return data, err
+}
+
+// NeoLookup calls the Near Earth Object Web Service (Neo) Lookup API with the default
+// paramters.
+//
+// The referenceId parameter corresponds to the Neo Reference Id of the object you are
+// trying to find.
+func (c *Client) NeoLookup(referenceId int) (*NeoResult, error) {
+	return c.NeoLookupOpts(referenceId, nil)
+}
+
+// NeoLookup calls the Near Earth Object Web Service (Neo) Lookup API with the given
+// options as parameters.
+//
+// The referenceId parameter corresponds to the Neo Reference Id of the object you are
+// trying to find.
+func (c *Client) NeoLookupOpts(referenceId int, opts *NeoLookupOptions) (*NeoResult, error) {
+	req, err := http.NewRequest("GET", neoUri+"neo/"+strconv.Itoa(referenceId), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	q := req.URL.Query()
+
+	if opts != nil {
+		q.Add("astroid_id", string(opts.AsteroidId))
+	}
+
+	req.URL.RawQuery = q.Encode()
+
+	data := &NeoResult{}
 	err = c.get(req, data)
 
 	return data, err

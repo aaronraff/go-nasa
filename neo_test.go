@@ -39,7 +39,7 @@ func TestNeoFeedOpts(t *testing.T) {
 	}
 
 	firstNeo := data.NearEarthObjects["2015-09-08"][0]
-	expectedSelfLink := "http://www.neowsapp.com/rest/v1/neo/3943323?api_key=DEMO_KEY"
+	expectedSelfLink := "http://www.neowsapp.com/rest/v1/neo/3726710?api_key=DEMO_KEY"
 	if firstNeo.Links.Self != expectedSelfLink {
 		t.Errorf("FirstNeo Links Self mismatch. Got: %s, Want: %s", firstNeo.Links.Self, expectedSelfLink)
 	}

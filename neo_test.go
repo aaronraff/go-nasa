@@ -13,14 +13,14 @@ func TestNeoFeed(t *testing.T) {
 }
 
 func TestNeoFeedOpts(t *testing.T) {
-	date, err := time.Parse("2006-01-02", "2019-12-22")
+	date, err := time.Parse("2006-01-02", "2015-09-07")
 	if err != nil {
 		t.Errorf("Unexpected error: %s", err)
 	}
 
 	opts := &NeoFeedOptions{
 		StartDate: date,
-		EndDate:   date.AddDate(0, 0, 7),
+		EndDate:   date.AddDate(0, 0, 1),
 	}
 
 	data, err := nasa.NeoFeedOpts(opts)
@@ -28,7 +28,7 @@ func TestNeoFeedOpts(t *testing.T) {
 		t.Errorf("Unexpected error: %s", err)
 	}
 
-	expectedLinksNext := "http://www.neowsapp.com/rest/v1/feed?start_date=2019-12-29&end_date=2020-01-05&detailed=false&api_key=DEMO_KEY"
+	expectedLinksNext := "http://www.neowsapp.com/rest/v1/feed?start_date=2015-09-08&end_date=2015-09-09&detailed=false&api_key=DEMO_KEY"
 	if data.Links.Next != expectedLinksNext {
 		t.Errorf("Links Next mismatch. Got: %s, Want: %s", data.Links.Next, expectedLinksNext)
 	}
